@@ -1,16 +1,15 @@
-import './App.css';
-import TypingBox from './Component/TypingBox';
-import { GlobalStyles } from './style/global';
+import React from "react";
+import { Route, Routes } from "react-router-dom";
+import HomePage from "./Pages/HomePage";
+import UserPage from "./Pages/UserPage";
 
 function App() {
-
+ 
   return (
-    <div className="canvas"> 
-     <GlobalStyles/>
-     <h1 className='heading' style={{"textAlign":"center" ,marginTop:"60px"}}>Typing Website</h1>
-     <TypingBox/>
-     <h1 style={{"textAlign":"center"}}>footer</h1>
-    </div>
+    <Routes>
+      <Route path="/" exact element= {<HomePage/>}/>
+      <Route path="/user" element = {<UserPage/>}/>
+    </Routes>
   );
 }
 

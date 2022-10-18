@@ -1,4 +1,5 @@
 import { createGlobalStyle } from "styled-components";
+// import { themeOptions } from "./theme";  
 
 export const GlobalStyles = createGlobalStyle`
 *,
@@ -13,8 +14,8 @@ body{
     justify-content:center;
     width:100%;
     height:100%;
-    color:#fff;
-    background:black;
+    background: ${ ({theme}) => theme.background };
+    color: ${ ({theme}) => theme.color};
     margin:0;
     padding:0;
     transition: all 0.25s linear; 
@@ -132,5 +133,30 @@ body{
 .right-stats{
     width: 70%;
 }
-  
+.header{
+    display: flex;
+    justify-content: space-between;
+    width: 1000px;
+    height: 60px;
+    margin-top: 60px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.footer{
+    display: flex;
+    justify-content: space-between;
+    width: 1000px;
+    height: 60px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.theme-options{
+    background: transparent;
+    min-width: 200px;
+    align-items: center;
+}
+.select{
+    color: black;
+    min-width: 90px;
+}
 `;
