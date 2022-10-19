@@ -14,8 +14,8 @@ body{
     justify-content:center;
     width:100%;
     height:100%;
-    background: ${ ({theme}) => theme.background };
-    color: ${ ({theme}) => theme.color};
+    background: ${ ({theme}) => theme.background } ;
+    color: ${ ({theme}) => theme.title};
     margin:0;
     padding:0;
     transition: all 0.25s linear; 
@@ -46,6 +46,7 @@ body{
     flex-wrap:wrap; 
     width:100%;
     font-size:28px;
+    color: ${ ({theme}) => theme.typeBoxText};
 }
 .word{
     margin:6px 5px;
@@ -56,7 +57,7 @@ body{
     opacity:0;
 }
 .char.correct{
-    color:green;
+    color: ${ ({theme}) => theme.title};
 }
 .char.incorrect{
     color:red;
@@ -67,11 +68,11 @@ body{
      animation:blinking 2s infinite;
      animation-timing-function: ease;
      @keyframes blinking{
-        0%{border-left-color:#fff;}
-        25%{border-left-color:black;}
-        50%{border-left-color:#fff;}
-        75%{border-left-color:black;}
-        100%{border-left-color:#fff;}
+        0%{border-left-color: ${ ({theme}) => theme.title};}
+        25%{border-left-color: ${ ({theme}) => theme.background };}
+        50%{border-left-color: ${ ({theme}) => theme.title};}
+        75%{border-left-color: ${ ({theme}) => theme.background };}
+        100%{border-left-color: ${ ({theme}) => theme.title};}
     }
 }
 .right {
@@ -80,11 +81,11 @@ body{
      animation:blinkingRight 2s infinite;
      animation-timing-function: ease;
      @keyframes blinkingRight {
-        0%{border-right-color:#fff;}
-        25%{border-right-color:black;}
-        50%{border-right-color:#fff;}
-        75%{border-right-color:black;}
-        100%{border-right-color:#fff;}
+        0%{border-right-color: ${ ({theme}) => theme.title};}
+        25%{border-right-color: ${ ({theme}) => theme.background };}
+        50%{border-right-color: ${ ({theme}) => theme.title};}
+        75%{border-right-color: ${ ({theme}) => theme.background };}
+        100%{border-right-color: ${ ({theme}) => theme.title};}
       } 
 }
 .upper-menu{
@@ -95,6 +96,7 @@ body{
     justify-content:space-between;
     max-width:1000px; 
     padding: 1rem;
+    color:  ${ ({theme}) => theme.typeBoxText };
 }
 .time-mode{
     display:flex;
@@ -104,7 +106,7 @@ body{
     margin-right:15px;
 }
 .timer:hover {
-    color:red;
+    color:${ ({theme}) => theme.title };
     cursor:pointer;
 }
 .counter{
@@ -122,13 +124,15 @@ body{
     padding:30px;
     width: 30%;
 }
+// for stats Title
 .title{
     font-size: 20px;
-    color: grey;
+    color: ${ ({theme}) => theme.typeBoxText };
 }
+// for stats SubTitle
 .subtitle{
     font-size: 30px;
-    color: gold;
+    color: ${ ({theme}) => theme.title };
 }
 .right-stats{
     width: 70%;
@@ -159,4 +163,9 @@ body{
     color: black;
     min-width: 90px;
 }
+
+
 `;
+
+
+export default GlobalStyles;

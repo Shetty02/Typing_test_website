@@ -10,6 +10,7 @@ import {
     Legend,
   } from 'chart.js';
   import { Line } from 'react-chartjs-2';
+import { useTheme } from '../Context/ThemeContext';
 
   ChartJS.register(
     CategoryScale,
@@ -22,6 +23,8 @@ import {
   );
 
 const Graph = ({graphData}) => {
+
+    const {theme} = useTheme();
   return (
     <div>
         <Line
@@ -30,8 +33,8 @@ const Graph = ({graphData}) => {
             labels: graphData.map(i=>i[0]+1),
             datasets:[{
              data:graphData.map(i=>i[1]),
-            labels:"wpm",
-            borderColor:"gold",
+            label:"wpm",
+            borderColor: theme.stats,
         }]
         }
         }

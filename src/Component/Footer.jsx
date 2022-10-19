@@ -1,4 +1,6 @@
 // import { color } from '@mui/system'
+import { yellow } from '@mui/material/colors'
+import { isFocusable } from '@testing-library/user-event/dist/utils'
 import React from 'react'
 import Select from 'react-select'
 import { useTheme } from '../Context/ThemeContext'
@@ -6,11 +8,12 @@ import {themeOptions} from'../style/theme'
 
 
 const Footer = () => {
-  const {setTheme} = useTheme();
+  const {setTheme, theme,defaultTheme} = useTheme();
 
   const handleThemeChange =(e) => {
     console.log("works");
     console.log(e.value)
+    localStorage.setItem('theme',JSON.stringify(e.value));
     setTheme(e.value);
   }
   return (
@@ -24,10 +27,13 @@ const Footer = () => {
                 options = {themeOptions}
                 menuPlacement='top'
                  onChange={handleThemeChange}
-                 defaultValue={themeOptions[0]}
-                //  styles={color= "black"}
-            >
-            </Select>
+                 defaultValue={{label:defaultTheme.label, value:defaultTheme}}
+                styles = {{
+                  control: styles =>({...styles, backgroundColor: theme.background}),
+                  menu:styles =>({...styles, backgroundColor: theme.background}),
+                  // option: (styles,{isFocused})
+                }}
+                />
         </div>
     </div>
   )
