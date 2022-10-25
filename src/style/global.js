@@ -164,7 +164,47 @@ body{
     min-width: 90px;
 }
 
-
+.reset-btn{
+    display: block;
+    margin: auto;
+    transform: scale(1.5);
+}
+.reset-btn:hover{
+    background: ${ ({theme}) => theme.typeBoxText };
+}
+.user-profile{
+    display: flex;
+    min-height: 15rem;
+    background-color: ${ ({theme}) => theme.typeBoxText };
+    border-radius: 30px;
+}
+.user{
+    width: 50%;
+    justify-content: center;
+    display: flex;
+    padding: 3rem;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    border-right: 2px solid;
+}
+.total-times{
+    width: 50%;
+    padding: 3rem;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+.picture{
+    width: 40%;
+}
+.info{
+    width: 50%;
+}
+.central-data{
+    max-width: 1000px;
+    margin: auto;
+    margin-top: 2rem;
+    margin-bottom: 3rem;
+}
 `;
 
 

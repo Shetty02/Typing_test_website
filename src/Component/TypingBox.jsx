@@ -332,7 +332,7 @@ const TypingBox = () => {
           </div>
         </div>
       ) : (
-        <h1><Stats 
+        <Stats 
         wpm = {calculateWPM()}
         accuracy = {calculateAccuracy()}
         correctChars = {correctChar}
@@ -340,7 +340,8 @@ const TypingBox = () => {
         extraChars = {extraChar}
         missedChars = {missedChar}
         graphData = {graphData}
-        /> </h1>
+        reset = {resetGame}
+        /> 
       )}
 
       <input
