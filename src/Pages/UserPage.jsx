@@ -14,25 +14,25 @@ import Header from '../Component/Header';
 const UserPage = () => {
 
   const [data, setData] = useState([]);
-
   const{theme} = useTheme();
   const[graphData, setGraphData] = useState([]);
-
   //This below user will tell us that user is in loading state or not.
   const [user,loading] = useAuthState(auth);
-
+  const[dataLoading, setDataLoading] = useState(true); 
+  const[joinedAt, setJoinedAt] = useState();
   const fetchUserData = ()=>{
     
     if(!loading){
       console.log(user);
-
+      setJoinedAt(new Date(user.metadata.creationTime).toISOString().split('T')[0])
+      console.log(new Date(user.metadata.creationTime).toISOString());
+      console.log("sdssd ",joinedAt);
       const {uid} = auth.currentUser;
-
       const resultRef = db.collection('results');
       let tempData = []
       let tempGraphData = []
       // After using where we are going to get the only user which is login not all the user , which we were getting before using "where"
-      resultRef.where("userId",'==',uid).orderBy('timeStamp').get().then((snapshot)=>{
+      resultRef.where("userId",'==',uid).orderBy('timeStamp','desc').get().then((snapshot)=>{
         // console.log("sed", snapshot);
          
         //by using doc.data we are going to get the individual data,that is stored inside the firestore Database.
@@ -44,6 +44,7 @@ const UserPage = () => {
         });
         setData(tempData);
         setGraphData(tempGraphData);
+        setDataLoading(false); 
       }) 
     }
   }
@@ -53,8 +54,11 @@ const UserPage = () => {
   },[loading]);
 
 
-  if(loading){
-    return (<CircularProgress size={100}/>)
+  if(loading || dataLoading){
+    <div className="central-screen">
+    return (<CircularProgress size={100} color ={theme.title}/>)
+    </div>
+
   }
     
   return (
