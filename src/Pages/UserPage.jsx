@@ -55,9 +55,12 @@ const UserPage = () => {
 
 
   if(loading || dataLoading){
-    <div className="central-screen">
-    return (<CircularProgress size={100} color ={theme.title}/>)
+    return (
+
+      <div className="central-screen">
+    (<CircularProgress size={100} color ={theme.title}/>)
     </div>
+    )
 
   }
     
