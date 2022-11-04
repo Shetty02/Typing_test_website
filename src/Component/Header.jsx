@@ -11,7 +11,8 @@ const Header = () => {
       <Link to='/' style={{textDecoration:'none',color:theme.title}}>
         <div className="logo" style={{cursor:'pointer'}}>
 
-            LOGO
+            {/* <img src="https://e7.pngegg.com/pngimages/501/834/png-clipart-computer-keyboard-information-typing-miscellaneous-text.png" alt="" /> */}
+             TypingTest
         </div>
       </Link>
         

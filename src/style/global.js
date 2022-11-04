@@ -32,6 +32,15 @@ body{
     padding:1rem;
     width:100vw;
 }
+.logo {
+    background-color:${ ({theme}) => theme.typeBoxText };
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+    width: 100px;
+    height: 50px;
+}
 .type-box{
     display:block;
     position:relative;
