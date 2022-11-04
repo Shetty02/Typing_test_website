@@ -1,12 +1,15 @@
 import { Dialog, DialogTitle } from '@mui/material';
 import React, { createRef, useEffect, useMemo, useRef, useState } from 'react'
 import { useGameMode } from '../Context/GameModes';
+import { useTheme } from '../Context/ThemeContext';
 import CapsLockWarning from './CapsLockWarning';
 import Stats from './Stats';
 import UpperMenu from './UpperMenu';
 var randomWords = require('random-words');
 
 const TypingBox = () => {
+  
+  const {gameTime, gameWords, gameMode} = useGameMode();
   const [currWordIndex, setCurrWordIndex] = useState(0); // Ex : I am on word Activity
   const [currCharIndex, setCurrCharIndex] = useState(0); // In an Activity which index i am on
   const [countDown, setCountDown] = useState(15); // for Timer
@@ -21,11 +24,18 @@ const TypingBox = () => {
   const[extraChar,setExtraChar] = useState(0);
   const[graphData,setGraphData] = useState([]);
   const [openDialog, setOpenDialog] = useState(false);
+  const {theme} =useTheme();
+  const wordWrapRef = useRef();
+  const outOfFocusWarningRef = useRef();
   const[wordsArray,setWordsArray] = useState(()=>{
-    return randomWords(50);
+    if(gameMode === 'words'){
+      return randomWords(gameWords);
+
+    }
+    return randomWords(200);
   });
   
-  const {gameTime} = useGameMode();
+  
 
   const handleDialogEvents = (e) =>{
 
@@ -62,6 +72,7 @@ const TypingBox = () => {
     setMissedChar(0);
     setExtraChar(0);
     setGraphData([]);
+    wordSpanRef[0].current.scrollIntoView();
     focusInput();
 
   }
@@ -74,28 +85,41 @@ const TypingBox = () => {
     return Array(words.length).fill(0).map(i=>createRef());
   },[words]);
 
-  const resetGame = ()=>{
+  const resetGame = async()=>{
     setCurrCharIndex(0);
     setCurrWordIndex(0);
     setCountDown(gameTime);
     setTestOver(false);
     setTestStart(false);
     clearInterval(intervalId);
-    let random = randomWords(50);
+    if(gameMode === 'words'){
+      let random = randomWords(Number(gameWords));
+      setWordsArray(random);  
+      setCountDown(180);
+    }
+    else{
+    let random = randomWords(200);
     setWordsArray(random);
+    }
     setCorrectChar(0);
     setInCorrectChar(0);
     setCorrectWords(0);
     setMissedChar(0);
     setExtraChar(0);
     setGraphData([]);
-    focusInput();
+    wordSpanRef[0].current.scrollIntoView();
+    // focusInput();
     // setWordSpanRef(Array(words.length).fill(0).map((i) => createRef()));
   } 
+  const restHelper = async()=>{
+          await resetGame();
+          focusInput(1,true);
+  }
 
   useEffect(()=>{
-    resetGame();
-  },[gameTime])
+    // resetGame();
+    restHelper();
+  },[gameTime,gameWords,gameMode])
 
   // const wordSpanRef = Array(words.length)
   //   .fill(0)
@@ -128,7 +152,9 @@ const TypingBox = () => {
         setCorrectChar((correctChar)=>{
           console.log("correctChar:",correctChar)
           setGraphData((data) =>{ 
-            return [...data,[gameTime-prevCountDown,Math.round((correctChar/5)/(gameTime-prevCountDown+1/60))]]
+
+            const startTime = (gameMode === 'words')? 180:gameTime;
+            return [...data,[startTime-prevCountDown,Math.round((correctChar/5)/(startTime-prevCountDown+1/60))]]
           })
           return correctChar;
         })
@@ -145,12 +171,29 @@ const TypingBox = () => {
   };
 
   const calculateWPM = ()=>{
-    return Math.round((correctChar/5)/(gameTime/60));
+    return Math.round((correctChar/5)/(graphData[graphData.length-1][0]/60));
   }
 
   const calculateAccuracy = () => {
     return  Math.round((correctWords/currWordIndex)*100)
   }
+
+  const handleInputfocus = ()=>{
+    console.log("Input no longer Focused");
+    wordWrapRef.current.className+=' blur'
+    outOfFocusWarningRef.current.className = "outOfFocusWarning"
+    if(testStart){
+      clearInterval(intervalId);
+    }
+  }
+  const handleInputInfocus = ()=>{
+    // console.log("Input no longer Focused");
+    wordWrapRef.current.className =wordWrapRef.current.className.replace(' blur',' ');
+    if(testStart){
+      startTimer();
+    }
+  }
+
 
   const handleKeyDown = (e) => {
     // console.log("down",e);
@@ -177,6 +220,13 @@ const TypingBox = () => {
     //This line of Code is for spacing and changing the words. 32 is a keyCode for Spacing
     if (e.keyCode === 32) {
 
+      //logic for Word MODE to stop the GAme and after hitting the spaceBar only my game will end
+        if(currWordIndex === wordsArray.length - 1){
+          clearInterval(intervalId);
+          setCountDown(0);
+          setTestOver(true);
+          return;
+        }
       const correctChar = wordSpanRef[currWordIndex].current.querySelectorAll('.correct');
       const incorrectChar = wordSpanRef[currWordIndex].current.querySelectorAll('.incorrect');
       setMissedChar(missedChar+(allSpans.length - incorrectChar.length -correctChar.length));
@@ -198,6 +248,10 @@ const TypingBox = () => {
         "span"
       )[0].className = "char current";
 
+      // For scrolling the words down
+      if(currWordIndex !=0 && wordSpanRef[currWordIndex+1].current.offsetLeft < wordSpanRef[currWordIndex].current.offsetLeft){
+        wordSpanRef[currWordIndex].current.scrollIntoView();
+      }
       setCurrWordIndex(currWordIndex + 1);
       setCurrCharIndex(0);
       return;
@@ -298,8 +352,17 @@ const TypingBox = () => {
     // console.log("Up",e);
   };
 
-  const focusInput = () => {
+  const focusInput = (e,newGame = false) => {
     textInputRef.current.focus();
+    // wordWrapRef.current.focus();
+    wordWrapRef.current.className =wordWrapRef.current.className.replace(' blur',' ');
+    outOfFocusWarningRef.current.className = "outOfFocusWarning-remove"
+    if(newGame){
+      return;
+    }
+    if(testStart){
+      startTimer();
+    }
   };
 
   useEffect(() => {  
@@ -321,7 +384,8 @@ const TypingBox = () => {
 
       {!testOver ? (
         <div className="type-box" onClick={focusInput}>
-          <div className="words">
+          <div className="outOfFocus" ref={outOfFocusWarningRef}>Click here to focus </div>
+          <div className="words" ref={wordWrapRef}>
             {words.map((word, index) => (
               <span className="word" ref={wordSpanRef[index]}>
                 {word.split("").map((char, ind) => (
@@ -349,24 +413,34 @@ const TypingBox = () => {
         className="hidden-input"
         ref={textInputRef}
         // Because of keyBoard input from user we use onkeyDown and onkeyUp.
+        onBlur={handleInputfocus} // for blur effect.
+        // onFocus={handleInputInfocus} // for removing blur effect.
         onKeyDown={(e) => handleKeyDown(e)}
         onKeyUp={(e) => handleKeyUp(e)}
       />
 
        <Dialog
       //  open ={false}
+        PaperProps={{
+          style:{
+            backgroundColor:"transparent",
+            boxShadow:"none"
+          }
+        }}
+        style={{
+          backdropFilter:"blur(2px)"}}
         open = {openDialog}
         onKeyDown = {handleDialogEvents}
 
        >
         <DialogTitle>
-          <div>
+          <div className='instruction'>
             press space to redo.
           </div>
-          <div>
+          <div className='instruction'>
             press Tab/Enter to restart.
           </div>
-          <div>
+          <div className='instruction'>
             press any other key to exit.
           </div>
         </DialogTitle>

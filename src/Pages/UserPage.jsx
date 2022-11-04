@@ -77,10 +77,12 @@ const UserPage = () => {
         </div>
         <div className="info">
           <div className="email">
-              {user.email};
+              {user.email}
           </div>
           <div className="joined-on">
-            {user.metadata.creationTime}
+            {/* {user.metadata.creationTime}
+             */}
+             joined {joinedAt}
           </div>
         </div>
       </div>

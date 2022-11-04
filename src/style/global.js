@@ -19,6 +19,7 @@ body{
     margin:0;
     padding:0;
     transition: all 0.25s linear; 
+    overflow-y:scroll;
 }
 .canvas{
     align-items:center;
@@ -98,14 +99,14 @@ body{
     padding: 1rem;
     color:  ${ ({theme}) => theme.typeBoxText };
 }
-.time-mode{
+.time-mode, .word-mode{
     display:flex;
 }
-.timer{
+.timer, .no-of-word{
     font-size:20px;
     margin-right:15px;
 }
-.timer:hover {
+.timer:hover , .no-of-word:hover{
     color:${ ({theme}) => theme.title };
     cursor:pointer;
 }
@@ -145,14 +146,33 @@ body{
     margin-top: 60px;
     margin-left: auto;
     margin-right: auto;
+    align-self: stretch;
 }
 .footer{
     display: flex;
     justify-content: space-between;
+    flex-direction: column;
     width: 1000px;
     height: 60px;
     margin-left: auto;
     margin-right: auto;
+    align-items: center;
+}
+.actual-footer{
+    display: flex;
+    justify-content: space-between;
+    width: 1000px;     
+}
+.hint{
+    kbd{
+        background-color: ${ ({theme}) => theme.title };
+        color: ${ ({theme}) => theme.background };
+        padding: 2.5px 5px;
+        border-radius: 3px;
+    }
+}
+.instruction{
+    color:${ ({theme}) => theme.title };
 }
 .theme-options{
     background: transparent;
@@ -163,11 +183,11 @@ body{
     color: black;
     min-width: 90px;
 }
-
 .reset-btn{
     display: block;
     margin: auto;
-    transform: scale(1.5);
+    /* padding: 5px; */
+    transform: scale(1.2);
 }
 .reset-btn:hover{
     background: ${ ({theme}) => theme.typeBoxText };
@@ -195,16 +215,21 @@ body{
 }
 .picture{
     position: relative;
-    width: 50%;
+    width: 30%;
+    margin-top: 45px;
     min-height: 5rem;
     min-width: 5rem;
 }
 .info{
     width: 50%;
     margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
     text-align: center;
     padding: 1rem;
-    font-size: 1.5rem;
+    font-size: 1.2rem;
 
 }
 .central-data{
@@ -218,7 +243,7 @@ body{
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
 }
 .central-screen{
     display: flex;
@@ -230,6 +255,33 @@ body{
 a{
     color:${ ({theme}) => theme.title } ;
     text-decoration: none;
+}
+.mode:hover{
+    color: ${ ({theme}) => theme.title };
+    border-right-color: ${ ({theme}) => theme.typeBoxText};
+    cursor: pointer;
+}
+.blur{
+    filter: blur(5px);
+}
+.outOfFocusWarning{
+    position: relative;
+    width: 1000px;
+    height: 0;
+    text-align: center;
+    margin: auto;
+    z-index: 999;
+    line-height: 130px;
+}
+.outOfFocusWarning-remove{
+    visibility: hidden;
+    position: relative;
+    width: 1000px;
+    height: 0;
+    text-align: center;
+    margin: auto;
+    z-index: 999;
+    line-height: 130px;
 }
 `;
 

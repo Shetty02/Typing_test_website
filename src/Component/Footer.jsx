@@ -18,7 +18,14 @@ const Footer = () => {
   }
   return (
     <div className='footer' >
-        <div className="footer-link">
+
+      <div className="instructions">
+          <div className="hint">
+            press <kbd>Tab</kbd> to open commands
+          </div>
+      </div>
+      <div className="actual-footer">
+      <div className="footer-link">
           <a href='https://github.com/Shetty02/Typing_test_website' target="_blank" style={{textDecoration:'none',color:theme.title}}> 
             <GitHubIcon/>
           </a>
@@ -37,6 +44,8 @@ const Footer = () => {
                 }}
                 />
         </div>
+      </div>
+        
     </div>
   )
 }
